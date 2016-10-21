@@ -6,20 +6,17 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('stylesheets/[name]-[id]-[hash].css');
 
 module.exports = {
-    entry: './src/main/web/js/app.js',
-    devtool: 'eval',
+    entry: ['whatwg-fetch','./web/js/index.js'],
+    devtool: 'source-map',
     cache: true,
     debug: true,
     output: {
-        path: path.join(__dirname, './src/main/resources/static/content/'),
+        path: path.join(__dirname, './target/classes/static/content/'),
         filename: '[name]-[id]-[hash].js'
     },
     module: {
         preLoaders: [
-            {
-                test: /\.css$/,
-                loader: 'stripcomment'
-            }
+
         ],
         loaders: [
             {
@@ -27,15 +24,15 @@ module.exports = {
                 loader: 'html'
             },
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /(node_modules)/,
-                loader: 'babel-loader'
+                loader: 'babel-loader?presets[]=es2015&presets[]=react'
             }, {
                 test: /\.json/,
                 loaders: ['json-loader']
             }, {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader?modules","postcss-loader")
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader","postcss-loader")
             }
         ]
     },
@@ -46,9 +43,10 @@ module.exports = {
     plugins: [
         extractCSS,
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "./src/main/web/index.tmpl.html")
+            template: path.join(__dirname, "./web/index.tmpl.html")
         }),
-        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin()
     ]
 };
