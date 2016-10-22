@@ -4,3 +4,4 @@ endorsed/
 node_modules/
 target/
 *.iml
+log/

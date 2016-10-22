@@ -1,17 +1,19 @@
-var path = require('path');
+const  outputPath="/content";
 
+var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('stylesheets/[name]-[id]-[hash].css');
 
+
 module.exports = {
-    entry: ['whatwg-fetch','./web/js/index.js'],
+    entry: ['whatwg-fetch','./web/js/index.jsx'],
     devtool: 'eval',
     cache: true,
     debug: true,
     output: {
-        path: path.join(__dirname, './target/classes/static/content/'),
+        path: path.join(__dirname, './target/classes/static/',outputPath),
         filename: '[name]-[id]-[hash].js'
     },
     module: {
